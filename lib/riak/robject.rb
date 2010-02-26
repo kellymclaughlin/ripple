@@ -72,7 +72,8 @@ module Riak
         end
         h
       end
-      @data = deserialize(response[:body]) if response[:body].present?
+      #@data = deserialize(response[:body]) if response[:body].present?
+      @data = deserialize(response[:body]) if !response[:body].blank?
       self
     end
 
@@ -97,8 +98,10 @@ module Riak
     # @return [Hash] hash of HTTP headers
     def reload_headers
       {}.tap do |h|
-        h['If-None-Match'] = @etag if @etag.present?
-        h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?
+        #h['If-None-Match'] = @etag if @etag.present?
+        h['If-None-Match'] = @etag if !@etag.blank?
+        #h['If-Modified-Since'] = @last_modified.httpdate if @last_modified.present?
+        h['If-Modified-Since'] = @last_modified.httpdate if !@last_modified.blank?
       end
     end
 
@@ -111,9 +114,11 @@ module Riak
     # @return [Riak::RObject] self
     # @raise [ArgumentError] if the content_type is not defined
     def store(options={})
-      raise ArgumentError, t("content_type_undefined") unless @content_type.present?
+      #raise ArgumentError, t("content_type_undefined") unless @content_type.present?
+      raise ArgumentError, t("content_type_undefined") unless !@content_type.blank?
       params = {:returnbody => true}.merge(options)
-      method, codes, path = @key.present? ? [:put, [200,204], "#{@bucket.name}/#{@key}"] : [:post, 201, @bucket.name]
+      #method, codes, path = @key.present? ? [:put, [200,204], "#{@bucket.name}/#{@key}"] : [:post, 201, @bucket.name]
+      method, codes, path = !@key.blank? ? [:put, [200,204], "#{@bucket.name}/#{@key}"] : [:post, 201, @bucket.name]
       response = @bucket.client.http.send(method, codes, @bucket.client.prefix, path, params, serialize(data), store_headers)
       load(response)
     end
@@ -215,8 +220,9 @@ module Riak
     
     private
     def extract_header(response, name, attribute=nil)
-      if response[:headers][name].present?
-        value = response[:headers][name].try(:first)
+      #if response[:headers][name].present?
+      if !response[:headers][name].blank?
+        value = response[:headers][name].send(:first) rescue nil
         value = yield value if block_given?
         send("#{attribute}=", value) if attribute
       end

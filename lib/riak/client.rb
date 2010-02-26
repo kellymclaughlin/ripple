@@ -11,6 +11,7 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
+require 'active_support'
 require 'riak'
 
 module Riak
@@ -81,7 +82,8 @@ module Riak
     # @raise [ArgumentError] if an invalid hostname is given
     # @return [String] the assigned hostname
     def host=(value)
-      raise ArgumentError, t("hostname_invalid") unless String === value && value.present? && value =~ HOST_REGEX
+      #raise ArgumentError, t("hostname_invalid") unless String === value && value.present? && value =~ HOST_REGEX
+      raise ArgumentError, t("hostname_invalid") unless String === value && !value.blank? && value =~ HOST_REGEX
       @host = value
     end
 

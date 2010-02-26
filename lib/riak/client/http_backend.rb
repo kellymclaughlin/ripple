@@ -23,7 +23,9 @@ module Riak
       # Create an HTTPBackend for the Riak::Client.
       # @param [Client] client the client
       def initialize(client)
-        raise ArgumentError, t("client_type", :client => client) unless Client === client
+        #raise ArgumentError, t("client_type", :client => client) unless Client === client
+        #raise ArgumentError, "client_type", :client => client unless Client === client
+        raise ArgumentError, "client_type" unless Client === client
         @client = client
       end
 
@@ -144,7 +146,8 @@ module Riak
       def path(*segments)
         query = segments.extract_options!.to_param
         root_uri.merge(URI.escape(segments.join("/").gsub(/\/+/, "/").sub(/^\//, ''))).tap do |uri|
-          uri.query = query if query.present?
+          #uri.query = query if query.present?
+          uri.query = query if !query.blank?
         end
       end
 
@@ -156,10 +159,12 @@ module Riak
         begin
           verify_path!(args)
         rescue ArgumentError
-          raise ArgumentError, t("path_and_body_required")
+          #raise ArgumentError, t("path_and_body_required")
+          raise ArgumentError, "path_and_body_required"
         end
 
-        raise ArgumentError, t("request_body_type") unless String === body || IO === body
+        #raise ArgumentError, t("request_body_type") unless String === body || IO === body
+        raise ArgumentError, "request_body_type" unless String === body || IO === body
         [args, body]
       end
 
@@ -168,7 +173,8 @@ module Riak
       # @raise [ArgumentError] if the resource path is too short
       def verify_path!(resource)
         resource = Array(resource).flatten
-        raise ArgumentError, t("resource_path_short") unless resource.length > 1 || resource.include?(@client.mapred)
+        #raise ArgumentError, t("resource_path_short") unless resource.length > 1 || resource.include?(@client.mapred)
+        raise ArgumentError, "resource_path_short" unless resource.length > 1 || resource.include?(@client.mapred)
       end
       
       # Checks the expected response codes against the actual response code. Use internally when

@@ -34,12 +34,14 @@ module Ripple
               if Numeric === value || value !~ /[^0-9]/
                 !value.to_i.zero?
               else
-                Boolean.ripple_cast(value) || value.present?
+                #Boolean.ripple_cast(value) || value.present?
+                Boolean.ripple_cast(value) || !value.blank?
               end
             elsif prop.type <= Numeric
               !value.zero?
             else
-              value.present?
+              #value.present?
+              !value.blank?
             end
           end
         end

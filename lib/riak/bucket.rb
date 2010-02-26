@@ -43,7 +43,8 @@ module Riak
     # @return [Bucket] self
     # @see Client#bucket
     def load(response={})
-      unless response.try(:[], :headers).try(:[],'content-type').try(:first) =~ /json$/
+      #unless response.try(:[], :headers).try(:[],'content-type').try(:first) =~ /json$/
+      unless (response.send(:[], :headers).send(:[],'content-type').send(:first) rescue nil) =~ /json$/
         raise Riak::InvalidResponse.new({"content-type" => ["application/json"]}, response[:headers], t("loading_bucket", :name => name))
       end
       payload = ActiveSupport::JSON.decode(response[:body])

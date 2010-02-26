@@ -134,7 +134,8 @@ module Riak
     # @return [Array<Array>] similar to link-walking, each element is an array of results from a phase where "keep" is true. If there is only one "keep" phase, only the results from that phase will be returned.
     def run
       response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
-      if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
+      #if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
+      if (response.send(:[], :headers).send(:[],'content-type').include?("application/json") rescue nil)
         ActiveSupport::JSON.decode(response[:body])
       else
         response

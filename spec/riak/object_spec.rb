@@ -81,7 +81,7 @@ describe Riak::RObject do
       end
 
       it "should serialize into a JSON blob" do
-        @object.serialize({"foo" => "bar"}).should == '{"foo":"bar"}'
+        @object.serialize({"foo" => "bar"}).should == '{"foo": "bar"}'
         @object.serialize(2).should == "2"
         @object.serialize("Some text").should == '"Some text"'
         @object.serialize([1,2,3]).should == "[1,2,3]"

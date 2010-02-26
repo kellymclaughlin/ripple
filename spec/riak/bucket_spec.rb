@@ -113,7 +113,7 @@ describe Riak::Bucket do
     end
 
     it "should PUT the new properties to the bucket" do
-      @http.should_receive(:put).with(204, "/riak/","foo", '{"props":{"name":"foo"}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
+      @http.should_receive(:put).with(204, "/riak/","foo", '{"props": {"name": "foo"}}', {"Content-Type" => "application/json"}).and_return({:body => "", :headers => {}})
       @bucket.props = { :name => "foo" }
     end
 

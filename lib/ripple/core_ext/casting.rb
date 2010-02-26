@@ -76,7 +76,8 @@ module Boolean
     when /^\s*f/i
       false
     else
-      value.present?
+      #value.present?
+      !value.blank?
     end
   end
 end

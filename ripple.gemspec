@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ripple}
-  s.version = "0.5.1"
+  s.version = "0.4.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sean Cribbs"]
-  s.date = %q{2010-02-22}
+  s.date = %q{2010-02-25}
   s.description = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.  It includes all the basics of accessing and manipulating Riak buckets and objects, and an object mapper library for building a rich domain on top of Riak.}
   s.email = %q{seancribbs@gmail.com}
   s.extra_rdoc_files = [
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
      "lib/riak/map_reduce.rb",
      "lib/riak/map_reduce_error.rb",
      "lib/riak/robject.rb",
+     "lib/riak/util/fiber1.8.rb",
      "lib/riak/util/headers.rb",
      "lib/riak/util/multipart.rb",
      "lib/riak/util/translation.rb",
@@ -78,16 +79,6 @@ Gem::Specification.new do |s|
      "spec/riak/net_http_backend_spec.rb",
      "spec/riak/object_spec.rb",
      "spec/riak/walk_spec_spec.rb",
-     "spec/ripple/attribute_methods_spec.rb",
-     "spec/ripple/bucket_access_spec.rb",
-     "spec/ripple/callbacks_spec.rb",
-     "spec/ripple/document_spec.rb",
-     "spec/ripple/embedded_document_spec.rb",
-     "spec/ripple/finders_spec.rb",
-     "spec/ripple/persistence_spec.rb",
-     "spec/ripple/properties_spec.rb",
-     "spec/ripple/ripple_spec.rb",
-     "spec/ripple/validations_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/support/http_backend_implementation_examples.rb",
@@ -97,33 +88,23 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.requirements = ["`gem install curb` for better HTTP performance"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{ripple is a rich Ruby client for Riak, Basho's distributed database.}
   s.test_files = [
-    "spec/riak/bucket_spec.rb",
-     "spec/riak/client_spec.rb",
-     "spec/riak/curb_backend_spec.rb",
+    "spec/spec_helper.rb",
+     "spec/support/mock_server.rb",
+     "spec/support/http_backend_implementation_examples.rb",
+     "spec/riak/object_spec.rb",
      "spec/riak/headers_spec.rb",
-     "spec/riak/http_backend_spec.rb",
      "spec/riak/link_spec.rb",
+     "spec/riak/http_backend_spec.rb",
      "spec/riak/map_reduce_spec.rb",
      "spec/riak/multipart_spec.rb",
-     "spec/riak/net_http_backend_spec.rb",
-     "spec/riak/object_spec.rb",
+     "spec/riak/client_spec.rb",
+     "spec/riak/curb_backend_spec.rb",
      "spec/riak/walk_spec_spec.rb",
-     "spec/ripple/attribute_methods_spec.rb",
-     "spec/ripple/bucket_access_spec.rb",
-     "spec/ripple/callbacks_spec.rb",
-     "spec/ripple/document_spec.rb",
-     "spec/ripple/embedded_document_spec.rb",
-     "spec/ripple/finders_spec.rb",
-     "spec/ripple/persistence_spec.rb",
-     "spec/ripple/properties_spec.rb",
-     "spec/ripple/ripple_spec.rb",
-     "spec/ripple/validations_spec.rb",
-     "spec/spec_helper.rb",
-     "spec/support/http_backend_implementation_examples.rb",
-     "spec/support/mock_server.rb"
+     "spec/riak/bucket_spec.rb",
+     "spec/riak/net_http_backend_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -136,16 +117,14 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rack>, [">= 1.0"])
       s.add_development_dependency(%q<yard>, [">= 0.5.2"])
       s.add_development_dependency(%q<curb>, [">= 0.6"])
-      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0.0.beta"])
-      s.add_runtime_dependency(%q<activemodel>, ["~> 3.0.0.beta"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 2.0.2"])
     else
       s.add_dependency(%q<rspec>, [">= 1.3"])
       s.add_dependency(%q<fakeweb>, [">= 1.2"])
       s.add_dependency(%q<rack>, [">= 1.0"])
       s.add_dependency(%q<yard>, [">= 0.5.2"])
       s.add_dependency(%q<curb>, [">= 0.6"])
-      s.add_dependency(%q<activesupport>, ["~> 3.0.0.beta"])
-      s.add_dependency(%q<activemodel>, ["~> 3.0.0.beta"])
+      s.add_dependency(%q<activesupport>, [">= 2.0.2"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.3"])
@@ -153,8 +132,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rack>, [">= 1.0"])
     s.add_dependency(%q<yard>, [">= 0.5.2"])
     s.add_dependency(%q<curb>, [">= 0.6"])
-    s.add_dependency(%q<activesupport>, ["~> 3.0.0.beta"])
-    s.add_dependency(%q<activemodel>, ["~> 3.0.0.beta"])
+    s.add_dependency(%q<activesupport>, [">= 2.0.2"])
   end
 end
 
