@@ -117,9 +117,11 @@ module Riak
     # @return [MapReduce] self
     # @see Phase#initialize
     def link(*params)
+      puts "Params: #{params}"
       options = params.extract_options!
       walk_spec_options = options.slice!(:type, :function, :language, :arg) unless params.first
       walk_spec = WalkSpec.normalize(params.shift || walk_spec_options).first
+      puts "Options: #{options}"
       @query << Phase.new({:type => :link, :function => walk_spec}.merge(options))
       self
     end

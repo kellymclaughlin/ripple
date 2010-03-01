@@ -84,6 +84,7 @@ module Riak
 
     # Converts the walk-spec into the form required by the link-walker resource URL
     def to_s
+      puts "TAG: #{@tag}"
       "#{@bucket || '_'},#{@tag || '_'},#{@keep ? '1' : '_'}"
     end
 

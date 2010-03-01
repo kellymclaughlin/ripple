@@ -160,18 +160,18 @@ describe Riak::MapReduce do
     it "should map phases to their JSON equivalents" do
       phase = Riak::MapReduce::Phase.new(:type => :map, :function => "function(){}")
       @mr.query << phase
-      @mr.to_json.should include('"source":"function(){}"')
-      @mr.to_json.should include('"query":[{"map":{')
+      @mr.to_json.should include('"source": "function(){}"')
+      @mr.to_json.should include('"query": [{"map":{')
     end
 
     it "should emit only the bucket name when the input is the whole bucket" do
       @mr.add("foo")
-      @mr.to_json.should include('"inputs":"foo"')
+      @mr.to_json.should include('"inputs": "foo"')
     end
 
     it "should emit an array of inputs when there are multiple inputs" do
       @mr.add("foo","bar",1000).add("foo","baz")
-      @mr.to_json.should include('"inputs":[["foo","bar",1000],["foo","baz"]]')
+      @mr.to_json.should include('"inputs": [["foo","bar",1000],["foo","baz"]]')
     end
   end
 

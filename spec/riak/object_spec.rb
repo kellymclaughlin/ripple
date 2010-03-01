@@ -84,7 +84,7 @@ describe Riak::RObject do
         @object.serialize({"foo" => "bar"}).should == '{"foo": "bar"}'
         @object.serialize(2).should == "2"
         @object.serialize("Some text").should == '"Some text"'
-        @object.serialize([1,2,3]).should == "[1,2,3]"
+        @object.serialize([1,2,3]).should == "[1, 2, 3]"
       end
 
       it "should deserialize a JSON blob" do
@@ -144,7 +144,8 @@ describe Riak::RObject do
 
     it "should load the body data" do
       @object.load({:headers => {"content-type" => ["application/json"]}, :body => '{"foo":"bar"}'})
-      @object.data.should be_present
+      #@object.data.should be_present
+      @object.data.should_not be_blank
     end
 
     it "should deserialize the body data" do
