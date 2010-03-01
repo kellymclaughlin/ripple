@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
      "lib/riak/map_reduce.rb",
      "lib/riak/map_reduce_error.rb",
      "lib/riak/robject.rb",
+     "lib/riak/util/activesupporthelper.rb",
      "lib/riak/util/fiber1.8.rb",
      "lib/riak/util/headers.rb",
      "lib/riak/util/multipart.rb",
