@@ -15,7 +15,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rubygems' # Use the gems path only for the spec suite
-require 'ripple'
+require 'riak'
 require 'spec'
 require 'spec/autorun'
 require 'fakeweb'
