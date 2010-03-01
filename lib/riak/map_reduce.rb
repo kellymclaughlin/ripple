@@ -17,6 +17,7 @@ module Riak
   # Class for invoking map-reduce jobs using the HTTP interface.
   class MapReduce
     include Util::Translation
+    include Util::ActiveSupportHelper
     # @return [Array<[bucket,key]>,String] The bucket/keys for input to the job, or the bucket (all keys).
     # @see #add
     attr_accessor :inputs
@@ -117,11 +118,11 @@ module Riak
     # @return [MapReduce] self
     # @see Phase#initialize
     def link(*params)
-      puts "Params: #{params}"
       options = params.extract_options!
-      walk_spec_options = options.slice!(:type, :function, :language, :arg) unless params.first
+      #Call a version of slice! that is basically the activesupport 2.3.5
+      #version converted to take a hash as a parameter.
+      walk_spec_options = slice!(options, [:type, :function, :language, :arg]) unless params.first
       walk_spec = WalkSpec.normalize(params.shift || walk_spec_options).first
-      puts "Options: #{options}"
       @query << Phase.new({:type => :link, :function => walk_spec}.merge(options))
       self
     end
@@ -209,7 +210,7 @@ module Riak
 
       # Converts the phase to JSON for use while invoking a job.
       # @return [String] a JSON representation of the phase
-      def to_json(options=nil)
+      def to_json(options={})
         ActiveSupport::JSON.encode(as_json, options)
       end
 

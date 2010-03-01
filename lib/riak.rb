@@ -41,5 +41,6 @@ module Riak
     autoload :Headers,       "riak/util/headers"
     autoload :Multipart,     "riak/util/multipart"
     autoload :Translation,   "riak/util/translation"
+    autoload :ActiveSupportHelper,   "riak/util/activesupporthelper"
   end
 end
