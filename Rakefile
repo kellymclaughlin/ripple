@@ -18,7 +18,6 @@ begin
     gem.add_development_dependency "curb", ">=0.6"
     gem.add_dependency "activesupport", ">= 2.0.2"
     gem.add_dependency "i18n", ">= 0.3.3"
-    #gem.add_dependency "activemodel", ">= 2.0.2"
     gem.requirements << "`gem install curb` for better HTTP performance"
   end
   Jeweler::GemcutterTasks.new
