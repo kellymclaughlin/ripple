@@ -12,6 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+require 'json'
 
 module Riak
   # Parent class of all object types supported by ripple. {Riak::RObject} represents
@@ -157,7 +158,7 @@ module Riak
       return payload if IO === payload
       case @content_type
       when /json/
-        ActiveSupport::JSON.encode(payload)
+        JSON[payload]
       when /yaml/
         YAML.dump(payload)
       when "application/octet-stream"
@@ -181,7 +182,7 @@ module Riak
     def deserialize(body)
       case @content_type
       when /json/
-        ActiveSupport::JSON.decode(body)
+        JSON.parse(body)
       when /yaml/
         YAML.load(body)
       when "application/octet-stream"

@@ -160,18 +160,18 @@ describe Riak::MapReduce do
     it "should map phases to their JSON equivalents" do
       phase = Riak::MapReduce::Phase.new(:type => :map, :function => "function(){}")
       @mr.query << phase
-      @mr.to_json.should include('"source": "function(){}"')
-      @mr.to_json.should include('"query": [{"map": {')
+      @mr.to_json.should include('"source":"function(){}"')
+      @mr.to_json.should include('"query":[{"map":{')
     end
 
     it "should emit only the bucket name when the input is the whole bucket" do
       @mr.add("foo")
-      @mr.to_json.should include('"inputs": "foo"')
+      @mr.to_json.should include('"inputs":"foo"')
     end
 
     it "should emit an array of inputs when there are multiple inputs" do
       @mr.add("foo","bar",1000).add("foo","baz")
-      @mr.to_json.should include('"inputs": [["foo", "bar", 1000], ["foo", "baz"]]')
+      @mr.to_json.should include('"inputs":[["foo","bar",1000],["foo","baz"]]')
     end
   end
 
@@ -281,9 +281,9 @@ describe Riak::MapReduce::Phase do
         end
 
         it "should include the keep value" do
-          @phase.to_json.should =~ /"keep": false/
+          @phase.to_json.should =~ /"keep":false/
           @phase.keep = true
-          @phase.to_json.should =~ /"keep": true/
+          @phase.to_json.should =~ /"keep":true/
         end
 
         it "should include the function source when the function is a source string" do
@@ -294,20 +294,20 @@ describe Riak::MapReduce::Phase do
 
         it "should include the function name when the function is not a lambda" do
           @phase.function = "Riak.mapValues"
-          @phase.to_json.should include('"name": "Riak.mapValues"')
+          @phase.to_json.should include('"name":"Riak.mapValues"')
           @phase.to_json.should_not include('"source"')
         end
         
         it "should include the bucket and key when referring to a stored function" do
           @phase.function = {:bucket => "design", :key => "wordcount_map"}
-          @phase.to_json.should include('"bucket": "design"')
-          @phase.to_json.should include('"key": "wordcount_map"')
+          @phase.to_json.should include('"bucket":"design"')
+          @phase.to_json.should include('"key":"wordcount_map"')
         end
 
         it "should include the module and function when invoking an Erlang function" do
           @phase.function = ["riak_mapreduce", "mapreduce_fun"]
-          @phase.to_json.should include('"module": "riak_mapreduce"')
-          @phase.to_json.should include('"function": "mapreduce_fun"')
+          @phase.to_json.should include('"module":"riak_mapreduce"')
+          @phase.to_json.should include('"function":"mapreduce_fun"')
         end
       end
     end
@@ -323,24 +323,24 @@ describe Riak::MapReduce::Phase do
       end
 
       it "should include the bucket" do
-        @phase.to_json.should =~ /"bucket": "_"/
+        @phase.to_json.should =~ /"bucket":"_"/
         @phase.function[:bucket] = "foo"
-        @phase.to_json.should =~ /"bucket": "foo"/
+        @phase.to_json.should =~ /"bucket":"foo"/
       end
 
       it "should include the tag" do
-        @phase.to_json.should =~ /"tag": "_"/
+        @phase.to_json.should =~ /"tag":"_"/
         @phase.function[:tag] = "parent"
-        @phase.to_json.should =~ /"tag": "parent"/
+        @phase.to_json.should =~ /"tag":"parent"/
       end
 
       it "should include the keep value" do
-        @phase.to_json.should =~ /"keep": false/
+        @phase.to_json.should =~ /"keep":false/
         @phase.keep = true
-        @phase.to_json.should =~ /"keep": true/
+        @phase.to_json.should =~ /"keep":true/
         @phase.keep = false
         @phase.function[:keep] = true
-        @phase.to_json.should =~ /"keep": true/
+        @phase.to_json.should =~ /"keep":true/
       end
     end
   end

@@ -12,6 +12,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 require 'riak'
+require 'json'
 
 module Riak
   # Class for invoking map-reduce jobs using the HTTP interface.
@@ -130,7 +131,7 @@ module Riak
     # Convert the job to JSON for submission over the HTTP interface.
     # @return [String] the JSON representation
     def to_json(options={})
-      ActiveSupport::JSON.encode({"inputs" => inputs, "query" => query.map(&:as_json)}, options)
+      JSON[{"inputs" => inputs, "query" => query.map(&:as_json)}, options]
     end
 
     # Executes this map-reduce job.
@@ -139,7 +140,7 @@ module Riak
       response = @client.http.post(200, @client.mapred, to_json, {"Content-Type" => "application/json", "Accept" => "application/json"})
       #if response.try(:[], :headers).try(:[],'content-type').include?("application/json")
       if (response.send(:[], :headers).send(:[],'content-type').include?("application/json") rescue nil)
-        ActiveSupport::JSON.decode(response[:body])
+        JSON.parse(response[:body])
       else
         response
       end
@@ -211,7 +212,7 @@ module Riak
       # Converts the phase to JSON for use while invoking a job.
       # @return [String] a JSON representation of the phase
       def to_json(options={})
-        ActiveSupport::JSON.encode(as_json, options)
+        JSON[as_json, options]
       end
 
       # Converts the phase to its JSON-compatible representation for job invocation.
